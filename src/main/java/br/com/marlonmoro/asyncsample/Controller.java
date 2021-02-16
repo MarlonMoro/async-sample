@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
   @GetMapping(path = "/sync")
-  public ResponseEntity<?> syncExecution(){
+  public ResponseEntity<Response> syncExecution(){
     return ResponseEntity.ok().build();
   }
 
   @GetMapping(path = "/async")
-  public ResponseEntity<?> asyncExecution(){
+  public ResponseEntity<Response> asyncExecution(){
     return ResponseEntity.ok().build();
   }
 
