@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class Response {
 
-  private final long runtime;
+  private final long duration;
 
-  public Response(long runtime) {
-    this.runtime = runtime;
+  public Response(long duration) {
+    this.duration = duration;
   }
 }
