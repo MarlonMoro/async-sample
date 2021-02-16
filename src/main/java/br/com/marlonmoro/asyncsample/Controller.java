@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
   @Autowired
-  private SyncService syncService;
+  private SampleService sampleService;
 
   @GetMapping(path = "/sync")
   public ResponseEntity<Response> syncExecution(){
-    return ResponseEntity.ok(syncService.execute());
+    return ResponseEntity.ok(sampleService.syncExecute());
   }
 
   @GetMapping(path = "/async")
   public ResponseEntity<Response> asyncExecution(){
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(sampleService.asyncExecute());
   }
 
 }
