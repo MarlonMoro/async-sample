@@ -1,3 +1,5 @@
 server:
   servlet:
     context-path: /sample
+  error:
+    include-message: always
