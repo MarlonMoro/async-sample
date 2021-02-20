@@ -34,6 +34,7 @@ public class PaymentService {
     }
   }
 
+  @Async
   public void cancelPayment(Payment payment) {
     log.info("Cancelando pagamento {}", payment.toString());
     try {
