@@ -47,9 +47,13 @@ public class SampleService {
 
   }
 
+  /**
+   * Serviço executa as mesmas duas ações para conseguir construir o objeto Sample
+   * porém de forma asincrona e paralela
+   */
   public Sample createAsyncSample() {
 
-    System.out.println("------ Execução Asíncrona ------");
+    System.out.println("------ Execução Assíncrona ------");
     LocalDateTime startTime = LocalDateTime.now();
     CompletableFuture<Customer> asyncCustomer = customerService.createAsyncCustomer();
     CompletableFuture<Payment> paymentCompletableFuture = paymentService.processAsyncPayment();
@@ -69,6 +73,36 @@ public class SampleService {
       throw new RuntimeException(
           "Serviço temporariamente indisponível, tente novamente mais tarde");
     } catch (ExecutionException e) {
+      log.error("Houve um erro ao tentar gerar um novo Sample {}", e.getMessage());
+      throw new RuntimeException(e.getMessage());
+    }
+  }
+
+
+  public Sample createAsyncExceptionSample() {
+
+    System.out.println("------ Execução com erro Assíncrona ------");
+    LocalDateTime startTime = LocalDateTime.now();
+    CompletableFuture<Customer> asyncCustomer = customerService.createAsyncExceptionCustomer();
+    CompletableFuture<Payment> paymentCompletableFuture = paymentService.processAsyncPayment();
+    CompletableFuture<Void> allCompletable = CompletableFuture
+        .allOf(asyncCustomer, paymentCompletableFuture);
+
+    try {
+      allCompletable.get();
+      LocalDateTime endTime = LocalDateTime.now();
+      return new Sample(asyncCustomer.get(), paymentCompletableFuture.get(),
+          startTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")),
+          endTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")),
+          Duration.between(startTime, endTime).toMillis());
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      paymentCompletableFuture.thenAccept(paymentService::cancelPayment);
+      log.error("Houve um erro sistêmico gerar um novo Sample {}", e.getMessage());
+      throw new RuntimeException(
+          "Serviço temporariamente indisponível, tente novamente mais tarde");
+    } catch (ExecutionException e) {
+      paymentCompletableFuture.thenAccept(paymentService::cancelPayment);
       log.error("Houve um erro ao tentar gerar um novo Sample {}", e.getMessage());
       throw new RuntimeException(e.getMessage());
     }

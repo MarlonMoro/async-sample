@@ -41,4 +41,12 @@ public class CustomerService {
     }
   }
 
+  /**
+   * Simula um erro ao cadastrar
+   */
+  @Async
+  public CompletableFuture<Customer> createAsyncExceptionCustomer() {
+    throw new RuntimeException("Erro ao tentar criar um Customer");
+  }
+
 }

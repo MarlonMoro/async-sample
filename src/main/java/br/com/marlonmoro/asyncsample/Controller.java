@@ -24,5 +24,10 @@ public class Controller {
     return ResponseEntity.ok(sampleService.createAsyncSample());
   }
 
+  @GetMapping(path = "/exception/async")
+  public ResponseEntity<Sample> processExceptionAsync() {
+    return ResponseEntity.ok(sampleService.createAsyncExceptionSample());
+  }
+
 
 }

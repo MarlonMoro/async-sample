@@ -16,4 +16,13 @@ public class Payment {
     this.uuid = UUID.randomUUID().toString();
     Value = value;
   }
+
+  @Override
+  public String toString() {
+    return "Payment{" +
+        "authorizationCode='" + authorizationCode + '\'' +
+        ", uuid='" + uuid + '\'' +
+        ", Value=" + Value +
+        '}';
+  }
 }
